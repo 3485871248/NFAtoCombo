@@ -1,22 +1,26 @@
 def transform(element):
-    stack = []
-    result = ''
+    result = []
+    ignore = False
     for char in element:
         if char == '[':
-            stack.append(char)
+            ignore = True
         elif char == ']':
-            stack.pop() if stack else None
-        elif not stack:
-            result += char
-    # 上为通义生成，我也看不懂，用来去掉[]及其里面的内容
-    combo = result
+            ignore = False
+        elif not ignore:
+            result.append(char)
+    combo = ''.join(result)
     if ' ' in combo:
         combo = combo.split(' ')
-
-    return combo[0]  # 去掉后面的内容
+        combo = combo[0].split(":")
+    else:
+        combo = combo.split(":")
+    return combo[0] + ":" + combo[1]
 
 
 filePath = input("拖入文件并回车：")
+
+if filePath.startswith('"') and filePath.endswith('"'):
+    filePath = filePath[1:-1]
 
 readFile = open(filePath, "r")
 NFAList = readFile.readlines()
