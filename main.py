@@ -10,11 +10,19 @@ def transform(element):
             result.append(char)
     combo = ''.join(result)
     if ' ' in combo:
+        if combo[0] == ' ':
+            combo = combo[1:]
         combo = combo.split(' ')
         combo = combo[0].split(":")
     else:
-        combo = combo.split(":")
-    return combo[0] + ":" + combo[1]
+        if ':' in combo:
+            combo = combo.split(":")
+        else:
+            combo = "Format error"
+    if combo != 'Format error':
+        return combo[0] + ":" + combo[1]
+    else:
+        return combo
 
 
 filePath = input("拖入文件并回车：")
